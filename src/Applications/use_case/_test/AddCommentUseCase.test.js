@@ -1,0 +1,59 @@
+const NewComment = require('../../../Domains/comments/entities/NewComment');
+const AddedComment = require('../../../Domains/comments/entities/AddedComment');
+const CommentRepository = require('../../../Domains/comments/CommentRepository');
+const ThreadRepository = require('../../../Domains/threads/ThreadRepository');
+const AddCommentUseCase = require('../AddCommentUseCase');
+
+jest.useFakeTimers();
+describe('AddCommentUseCase', () => {
+  it('should orchestrating the add comment action correctly', async () => {
+    // Arrange
+    const date = new Date().toISOString();
+    const useCasePayload = {
+      content: 'a comment',
+    };
+    const useCaseParams = {
+      threadId: 'thread-123',
+    };
+    const useCaseAuth = {
+      credentials: {
+        id: 'user-123',
+        username: 'dicoding',
+      },
+    };
+    const expectedAddedComment = new AddedComment({
+      id: 'comment-123',
+      content: 'a comment',
+      owner: 'user-123',
+    });
+
+    const mockCommentRepository = new CommentRepository();
+    const mockThreadRepository = new ThreadRepository();
+
+    mockCommentRepository.addComment = jest.fn()
+      .mockImplementation(() => Promise.resolve(expectedAddedComment));
+    mockThreadRepository.checkAvailabilityThread = jest.fn()
+      .mockImplementation(() => Promise.resolve());
+
+    const addCommentUseCase = new AddCommentUseCase({
+      commentRepository: mockCommentRepository,
+      threadRepository: mockThreadRepository,
+    });
+
+    // Action
+    const addedComment = await addCommentUseCase
+      .execute(useCasePayload, useCaseParams, useCaseAuth);
+
+    // Assert
+    expect(addedComment).toStrictEqual(expectedAddedComment);
+    expect(mockThreadRepository.checkAvailabilityThread)
+      .toBeCalledWith(useCaseParams.threadId);
+    expect(mockCommentRepository.addComment)
+      .toBeCalledWith(new NewComment({
+        ...useCasePayload,
+        ...useCaseParams,
+        owner: useCaseAuth.credentials.id,
+        date,
+      }));
+  });
+});
