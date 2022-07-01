@@ -26,7 +26,14 @@ describe('GetThreadUseCase', () => {
     mockThreadRepository.findThreadById = jest.fn()
       .mockImplementation(() => Promise.resolve(expectedGetThread));
     mockCommentRepository.findCommentsByThreadId = jest.fn()
-      .mockImplementation(() => Promise.resolve([]));
+      .mockImplementation(() => Promise.resolve([
+        {
+          id: 'comment-123',
+          username: 'dicoding',
+          date: 'now',
+          content: 'a comment',
+        },
+      ]));
     mockReplyRepository.findRepliesByCommentIds = jest.fn()
       .mockImplementation(() => Promise.resolve([]));
 
