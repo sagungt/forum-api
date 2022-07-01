@@ -179,7 +179,127 @@ describe('/threads endpoint', () => {
   });
 
   describe('when GET /threads/{threadId}', () => {
-    it('should response 200 with correct values in database', async () => {
+    it('should response 200 with correct value without comments', async () => {
+      // Arrange
+      const server = await createServer(container);
+
+      // add user
+      await server.inject({
+        method: 'POST',
+        url: '/users',
+        payload: {
+          username: 'dicoding',
+          password: 'secret',
+          fullname: 'Dicoding Indonesia',
+        },
+      });
+      // login
+      const authenticationResponse = await server.inject({
+        method: 'POST',
+        url: '/authentications',
+        payload: {
+          username: 'dicoding',
+          password: 'secret',
+        },
+      });
+      const authenticationResponseJson = JSON.parse(authenticationResponse.payload);
+      const { accessToken } = authenticationResponseJson.data;
+      // add thread
+      const threadResponse = await server.inject({
+        method: 'POST',
+        url: '/threads',
+        payload: {
+          title: 'a thread',
+          body: 'thread content',
+        },
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      const threadResponseJson = JSON.parse(threadResponse.payload);
+      const { id: threadId } = threadResponseJson.data.addedThread;
+
+      // Action
+      const response = await server.inject({
+        method: 'GET',
+        url: `/threads/${threadId}`,
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(200);
+      expect(responseJson.status).toEqual('success');
+      expect(responseJson.data.thread.id).toEqual(threadId);
+      expect(responseJson.data.thread.comments).not.toBeDefined();
+    });
+
+    it('should response 200 with correct value without replies', async () => {
+      // Arrange
+      const server = await createServer(container);
+
+      // add user
+      await server.inject({
+        method: 'POST',
+        url: '/users',
+        payload: {
+          username: 'dicoding',
+          password: 'secret',
+          fullname: 'Dicoding Indonesia',
+        },
+      });
+      // login
+      const authenticationResponse = await server.inject({
+        method: 'POST',
+        url: '/authentications',
+        payload: {
+          username: 'dicoding',
+          password: 'secret',
+        },
+      });
+      const authenticationResponseJson = JSON.parse(authenticationResponse.payload);
+      const { accessToken } = authenticationResponseJson.data;
+      // add thread
+      const threadResponse = await server.inject({
+        method: 'POST',
+        url: '/threads',
+        payload: {
+          title: 'a thread',
+          body: 'thread content',
+        },
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      const threadResponseJson = JSON.parse(threadResponse.payload);
+      const { id: threadId } = threadResponseJson.data.addedThread;
+      const commentResponse = await server.inject({
+        method: 'POST',
+        url: `/threads/${threadId}/comments`,
+        payload: {
+          content: 'a comment',
+        },
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      const commentResponseJson = JSON.parse(commentResponse.payload);
+      const { id: commentId } = commentResponseJson.data.addedComment;
+
+      // Action
+      const response = await server.inject({
+        method: 'GET',
+        url: `/threads/${threadId}`,
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(200);
+      expect(responseJson.status).toEqual('success');
+      expect(responseJson.data.thread.comments[0].id).toEqual(commentId);
+      expect(responseJson.data.thread.comments[0].replies).not.toBeDefined();
+    });
+
+    it('should response 200 with correct values with comments and replies in database', async () => {
       // Arrange
       const server = await createServer(container);
 
@@ -311,9 +431,6 @@ describe('/threads endpoint', () => {
       const response = await server.inject({
         method: 'GET',
         url: `/threads/${threadId}`,
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
       });
 
       // Arrange
