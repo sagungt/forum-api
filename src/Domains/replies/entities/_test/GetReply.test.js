@@ -19,6 +19,7 @@ describe('GetReply entities', () => {
       username: 'dicoding',
       date: 'now',
       content: 123,
+      isDeleted: true,
     };
 
     // Action & Assert
@@ -32,6 +33,7 @@ describe('GetReply entities', () => {
       username: 'dicoding',
       date: 'now',
       content: 'a comment',
+      isDeleted: false,
     };
 
     // Action
@@ -43,5 +45,26 @@ describe('GetReply entities', () => {
     expect(getReply.username).toEqual(payload.username);
     expect(getReply.date).toEqual(payload.date);
     expect(getReply.content).toEqual(payload.content);
+  });
+
+  it('should create GetReply entity with soft deleted correctly', () => {
+    // Arrange
+    const payload = {
+      id: 'comment-123',
+      username: 'dicoding',
+      date: 'now',
+      content: 'a comment',
+      isDeleted: true,
+    };
+
+    // Action
+    const getReply = new GetReply(payload);
+
+    // Assert
+    expect(getReply).toBeInstanceOf(GetReply);
+    expect(getReply.id).toEqual(payload.id);
+    expect(getReply.username).toEqual(payload.username);
+    expect(getReply.date).toEqual(payload.date);
+    expect(getReply.content).toEqual('**balasan telah dihapus**');
   });
 });

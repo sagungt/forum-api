@@ -11,10 +11,10 @@ class AddReplyUseCase {
     this._threadRepository = threadRepository;
   }
 
-  async execute(userId, useCaseParams, useCasePayload) {
-    await this._verifyParams(useCaseParams);
+  async execute(userId, threadId, commentId, useCasePayload) {
+    await this._threadRepository.checkAvailabilityThread(threadId);
+    await this._commentRepository.checkAvailabilityComment(commentId);
     const { content } = useCasePayload;
-    const { commentId } = useCaseParams;
     const date = new Date().toISOString();
     const newReply = new NewReply({
       commentId,
@@ -23,13 +23,6 @@ class AddReplyUseCase {
       owner: userId,
     });
     return this._replyRepository.addReply(newReply);
-  }
-
-  async _verifyParams(params) {
-    const { threadId, commentId } = params;
-
-    await this._threadRepository.checkAvailabilityThread(threadId);
-    await this._commentRepository.checkAvailabilityComment(commentId);
   }
 }
 

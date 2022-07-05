@@ -206,14 +206,12 @@ describe('CommentRepositoryPostgres', () => {
         owner: 'user-123',
         date: 'now3',
       });
-      const sortedDate = ['now2', 'now1'].sort((a, b) => a.localeCompare(b));
 
       // Action
       const comments1 = await commentRepositoryPostgres.findCommentsByThreadId('thread-1');
       const comments2 = await commentRepositoryPostgres.findCommentsByThreadId('thread-2');
 
       // Assert
-      const dates = comments1.map((comment) => comment.date);
       expect(comments1).toHaveLength(2);
       expect(comments2).toHaveLength(1);
       expect(comments1).toStrictEqual([
@@ -241,7 +239,6 @@ describe('CommentRepositoryPostgres', () => {
           isDeleted: false,
         },
       ]);
-      expect(dates).toStrictEqual(sortedDate);
     });
   });
 });

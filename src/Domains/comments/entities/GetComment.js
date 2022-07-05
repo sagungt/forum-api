@@ -2,22 +2,22 @@ class GetComment {
   constructor(payload) {
     this._verifyPayload(payload);
     const {
-      id, username, date, content,
+      id, username, date, content, isDeleted,
     } = payload;
 
     this.id = id;
     this.username = username;
     this.date = date;
-    this.content = content;
+    this.content = isDeleted ? '**komentar telah dihapus**' : content;
   }
 
   _verifyPayload(payload) {
     const {
-      id, username, date, content,
+      id, username, date, content, isDeleted,
     } = payload;
 
     if (
-      !id || !username || !date || !content
+      !id || !username || !date || !content || isDeleted === undefined || isDeleted === null
     ) {
       throw new Error('GET_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY');
     }
@@ -27,6 +27,7 @@ class GetComment {
       || typeof username !== 'string'
       || typeof date !== 'string'
       || typeof content !== 'string'
+      || typeof isDeleted !== 'boolean'
     ) {
       throw new Error('GET_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION');
     }

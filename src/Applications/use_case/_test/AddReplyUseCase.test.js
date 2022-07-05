@@ -13,10 +13,8 @@ describe('AddReplyUseCase', () => {
     const useCasePayload = {
       content: 'a reply',
     };
-    const useCaseParams = {
-      threadId: 'thread-123',
-      commentId: 'comment-123',
-    };
+    const threadId = 'thread-123';
+    const commentId = 'comment-123';
     const userId = 'user-123';
     const expectedAddedReply = new AddedReply({
       id: 'reply-123',
@@ -44,20 +42,21 @@ describe('AddReplyUseCase', () => {
     // Action
     const addedReply = await addReplyUseCase.execute(
       userId,
-      useCaseParams,
+      threadId,
+      commentId,
       useCasePayload,
     );
 
     // Assert
     expect(addedReply).toStrictEqual(expectedAddedReply);
     expect(mockThreadRepository.checkAvailabilityThread)
-      .toBeCalledWith(useCaseParams.threadId);
+      .toBeCalledWith(threadId);
     expect(mockCommentRepository.checkAvailabilityComment)
-      .toBeCalledWith(useCaseParams.commentId);
+      .toBeCalledWith(commentId);
     expect(mockReplyRepository.addReply)
       .toBeCalledWith(new NewReply({
         ...useCasePayload,
-        commentId: useCaseParams.commentId,
+        commentId,
         date,
         owner: userId,
       }));

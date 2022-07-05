@@ -50,8 +50,6 @@ class ReplyRepositoryPostgres extends ReplyRepository {
   }
 
   async findRepliesByCommentIds(commentIds) {
-    const parsedIds = commentIds.map((id, index) => `$${index + 1}`).join(', ');
-
     const query = {
       text: `
         SELECT
@@ -59,8 +57,8 @@ class ReplyRepositoryPostgres extends ReplyRepository {
           R.content AS content,
           R.date AS date,
           U.username AS username,
-          R.comment_id as comment_id,
-          R.is_deleted as is_deleted
+          R.comment_id AS "commentId",
+          R.is_deleted AS "isDeleted"
         FROM
           replies R
         INNER JOIN
@@ -68,12 +66,12 @@ class ReplyRepositoryPostgres extends ReplyRepository {
         ON
           R.owner = U.id
         WHERE
-          R.comment_id IN (${parsedIds})
+          R.comment_id = ANY($1::text[])
         ORDER BY
           R.date
         ASC
       `,
-      values: commentIds,
+      values: [commentIds],
     };
 
     const result = await this._pool.query(query);

@@ -6,17 +6,10 @@ const ThreadRepository = require('../../../Domains/threads/ThreadRepository');
 describe('DeleteReplyUseCase', () => {
   it('should orchestrating the delete reply action correctly', async () => {
     // Arrange
-    const useCaseParams = {
-      threadId: 'thread-123',
-      commentId: 'comment-123',
-      replyId: 'reply-123',
-    };
-    const useCaseAuth = {
-      credentials: {
-        id: 'user-123',
-        username: 'dicoding',
-      },
-    };
+    const threadId = 'thread-123';
+    const commentId = 'comment-123';
+    const replyId = 'reply-123';
+    const userId = 'user-123';
     const mockReplyRepository = new ReplyRepository();
     const mockCommentRepository = new CommentRepository();
     const mockThreadRepository = new ThreadRepository();
@@ -37,16 +30,16 @@ describe('DeleteReplyUseCase', () => {
     });
 
     // Action
-    await deleteReplyUseCase.execute(useCaseAuth, useCaseParams);
+    await deleteReplyUseCase.execute(userId, threadId, commentId, replyId);
 
     // Assert
     expect(mockThreadRepository.checkAvailabilityThread)
-      .toBeCalledWith(useCaseParams.threadId);
+      .toBeCalledWith(threadId);
     expect(mockCommentRepository.checkAvailabilityComment)
-      .toBeCalledWith(useCaseParams.commentId);
+      .toBeCalledWith(commentId);
     expect(mockReplyRepository.checkAvailabilityReply)
-      .toBeCalledWith(useCaseParams.replyId);
+      .toBeCalledWith(replyId);
     expect(mockReplyRepository.softDeleteReplyById)
-      .toBeCalledWith(useCaseParams.replyId);
+      .toBeCalledWith(replyId);
   });
 });

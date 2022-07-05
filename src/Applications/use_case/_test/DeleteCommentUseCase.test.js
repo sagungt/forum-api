@@ -28,10 +28,8 @@ describe('DeleteCommentUseCase', () => {
 
   it('should orchestrating the delete comment action correctly', async () => {
     // Arrange
-    const useCaseParams = {
-      threadId: 'thread-123',
-      commentId: 'comment-123',
-    };
+    const threadId = 'thread-123';
+    const commentId = 'comment-123';
     const userId = 'user-123';
     const mockCommentRepository = new CommentRepository();
     const mockThreadRepository = new ThreadRepository();
@@ -48,14 +46,14 @@ describe('DeleteCommentUseCase', () => {
     });
 
     // Action
-    await deleteCommentUseCase.execute(userId, useCaseParams);
+    await deleteCommentUseCase.execute(userId, threadId, commentId);
 
     // Assert
     expect(mockThreadRepository.checkAvailabilityThread)
-      .toHaveBeenCalledWith(useCaseParams.threadId);
+      .toHaveBeenCalledWith(threadId);
     expect(mockCommentRepository.checkAvailabilityComment)
-      .toHaveBeenCalledWith(useCaseParams.commentId);
+      .toHaveBeenCalledWith(commentId);
     expect(mockCommentRepository.softDeleteCommentById)
-      .toHaveBeenCalledWith(useCaseParams.commentId);
+      .toHaveBeenCalledWith(commentId);
   });
 });

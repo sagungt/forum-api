@@ -12,38 +12,25 @@ class GetThreadUseCase {
     this._replyRepository = replyRepository;
   }
 
-  async execute(useCaseParams) {
-    await this._verifyParams(useCaseParams);
-    const { threadId } = useCaseParams;
+  async execute(threadId) {
+    await this._threadRepository.checkAvailabilityThread(threadId);
     const getThread = await this._threadRepository.findThreadById(threadId);
     const comments = await this._commentRepository.findCommentsByThreadId(threadId);
     if (comments.length) {
       const replies = await this._replyRepository
         .findRepliesByCommentIds(comments.map((comment) => comment.id));
-      const replyIds = replies.map((reply) => reply.comment_id);
+      const replyIds = replies.map((reply) => reply.commentId);
       getThread.comments = comments.map((comment) => {
-        const getComment = new GetComment({
-          ...comment,
-          content: comment.isDeleted ? '**komentar telah dihapus**' : comment.content,
-        });
+        const getComment = new GetComment(comment);
         if (replyIds.includes(comment.id)) {
           getComment.replies = replies
-            .filter((reply) => reply.comment_id === comment.id)
-            .map((reply) => new GetReply({
-              ...reply,
-              content: reply.is_deleted ? '**balasan telah dihapus**' : reply.content,
-            }));
+            .filter((reply) => reply.commentId === comment.id)
+            .map((reply) => ({ ...new GetReply(reply) }));
         }
-        return getComment;
+        return { ...getComment };
       });
     }
-    return getThread;
-  }
-
-  async _verifyParams(params) {
-    const { threadId } = params;
-
-    await this._threadRepository.checkAvailabilityThread(threadId);
+    return { ...getThread };
   }
 }
 

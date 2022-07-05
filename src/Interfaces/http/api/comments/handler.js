@@ -10,10 +10,12 @@ class CommentHandler {
   }
 
   async postCommentHandler(request, h) {
+    const { id: userId } = request.auth.credentials;
+    const { threadId } = request.params;
     const addCommentUseCase = this._container.getInstance(AddCommentUseCase.name);
     const addedComment = await addCommentUseCase.execute(
-      request.auth.credentials.id,
-      request.params,
+      userId,
+      threadId,
       request.payload,
     );
 
@@ -28,8 +30,10 @@ class CommentHandler {
   }
 
   async deleteCommentHandler(request) {
+    const { id: userId } = request.auth.credentials;
+    const { threadId, commentId } = request.params;
     const deleteCommentUseCase = this._container.getInstance(DeleteCommentUseCase.name);
-    await deleteCommentUseCase.execute(request.auth.credentials.id, request.params);
+    await deleteCommentUseCase.execute(userId, threadId, commentId);
     return {
       status: 'success',
     };

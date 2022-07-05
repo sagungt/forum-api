@@ -7,17 +7,10 @@ class DeleteCommentUseCase {
     this._threadRepository = threadRepository;
   }
 
-  async execute(userId, useCaseParams) {
-    await this._verifyParams(useCaseParams);
-    const { commentId } = useCaseParams;
+  async execute(userId, threadId, commentId) {
+    await this._threadRepository.checkAvailabilityThread(threadId);
     await this._verifyOwner(userId, commentId);
     await this._commentRepository.softDeleteCommentById(commentId);
-  }
-
-  async _verifyParams(params) {
-    const { threadId } = params;
-
-    await this._threadRepository.checkAvailabilityThread(threadId);
   }
 
   async _verifyOwner(userId, commentId) {

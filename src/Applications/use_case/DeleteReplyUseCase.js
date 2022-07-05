@@ -9,19 +9,11 @@ class DeleteReplyUseCase {
     this._replyRepository = replyRepository;
   }
 
-  async execute(useCaseAuth, useCaseParams) {
-    await this._verifyParams(useCaseParams);
-    const { replyId } = useCaseParams;
-    const { id: userId } = useCaseAuth.credentials;
-    await this._verifyOwner(userId, replyId);
-    await this._replyRepository.softDeleteReplyById(replyId);
-  }
-
-  async _verifyParams(params) {
-    const { threadId, commentId } = params;
-
+  async execute(userId, threadId, commentId, replyId) {
     await this._threadRepository.checkAvailabilityThread(threadId);
     await this._commentRepository.checkAvailabilityComment(commentId);
+    await this._verifyOwner(userId, replyId);
+    await this._replyRepository.softDeleteReplyById(replyId);
   }
 
   async _verifyOwner(userId, replyId) {
