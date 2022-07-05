@@ -163,7 +163,7 @@ describe('CommentRepositoryPostgres', () => {
   });
 
   describe('findCommentsByThreadId function', () => {
-    it('should return comments matching with threadId', async () => {
+    it('should return comments matching with threadId sort by ascending', async () => {
       // Arrange
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
 
@@ -190,42 +190,44 @@ describe('CommentRepositoryPostgres', () => {
         threadId: 'thread-1',
         content: 'comment 1',
         owner: 'user-123',
-        date: 'now',
+        date: 'now1',
       });
       await CommentsTableTestHelper.addComment({
         id: 'comment-2',
         threadId: 'thread-1',
         content: 'comment 2',
         owner: 'user-123',
-        date: 'now',
+        date: 'now2',
       });
       await CommentsTableTestHelper.addComment({
         id: 'comment-3',
         threadId: 'thread-2',
         content: 'comment 3',
         owner: 'user-123',
-        date: 'now',
+        date: 'now3',
       });
+      const sortedDate = ['now2', 'now1'].sort((a, b) => a.localeCompare(b));
 
       // Action
       const comments1 = await commentRepositoryPostgres.findCommentsByThreadId('thread-1');
       const comments2 = await commentRepositoryPostgres.findCommentsByThreadId('thread-2');
 
       // Assert
+      const dates = comments1.map((comment) => comment.date);
       expect(comments1).toHaveLength(2);
       expect(comments2).toHaveLength(1);
       expect(comments1).toStrictEqual([
         {
           id: 'comment-1',
           username: 'dicoding',
-          date: 'now',
+          date: 'now1',
           content: 'comment 1',
           isDeleted: false,
         },
         {
           id: 'comment-2',
           username: 'dicoding',
-          date: 'now',
+          date: 'now2',
           content: 'comment 2',
           isDeleted: false,
         },
@@ -234,11 +236,12 @@ describe('CommentRepositoryPostgres', () => {
         {
           id: 'comment-3',
           username: 'dicoding',
-          date: 'now',
+          date: 'now3',
           content: 'comment 3',
           isDeleted: false,
         },
       ]);
+      expect(dates).toStrictEqual(sortedDate);
     });
   });
 });

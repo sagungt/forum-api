@@ -12,9 +12,9 @@ class CommentHandler {
   async postCommentHandler(request, h) {
     const addCommentUseCase = this._container.getInstance(AddCommentUseCase.name);
     const addedComment = await addCommentUseCase.execute(
-      request.payload,
+      request.auth.credentials.id,
       request.params,
-      request.auth,
+      request.payload,
     );
 
     const response = h.response({
@@ -29,7 +29,7 @@ class CommentHandler {
 
   async deleteCommentHandler(request) {
     const deleteCommentUseCase = this._container.getInstance(DeleteCommentUseCase.name);
-    await deleteCommentUseCase.execute(request.params, request.auth);
+    await deleteCommentUseCase.execute(request.auth.credentials.id, request.params);
     return {
       status: 'success',
     };

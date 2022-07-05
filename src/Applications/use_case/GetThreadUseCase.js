@@ -24,7 +24,7 @@ class GetThreadUseCase {
       getThread.comments = comments.map((comment) => {
         const getComment = new GetComment({
           ...comment,
-          content: comment.is_deleted ? '**komentar telah dihapus**' : comment.content,
+          content: comment.isDeleted ? '**komentar telah dihapus**' : comment.content,
         });
         if (replyIds.includes(comment.id)) {
           getComment.replies = replies

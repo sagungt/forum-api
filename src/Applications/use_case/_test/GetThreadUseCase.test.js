@@ -25,7 +25,7 @@ describe('GetThreadUseCase', () => {
         date: 'now',
         content: 'a comment 1',
         owner: 'user-123',
-        is_deleted: false,
+        isDeleted: false,
       },
       {
         id: 'comment-1234',
@@ -33,7 +33,7 @@ describe('GetThreadUseCase', () => {
         date: 'now',
         content: 'a comment 2',
         owner: 'user-123',
-        is_deleted: true,
+        isDeleted: true,
       },
     ];
     const expectedReplies = [
@@ -59,7 +59,7 @@ describe('GetThreadUseCase', () => {
     const repliesInComment = (comments, replies) => comments.map((comment) => {
       const getComment = new GetComment({
         ...comment,
-        content: comment.is_deleted ? '**komentar telah dihapus**' : comment.content,
+        content: comment.isDeleted ? '**komentar telah dihapus**' : comment.content,
       });
       if (replies.map((reply) => reply.comment_id).includes(comment.id)) {
         getComment.replies = replies

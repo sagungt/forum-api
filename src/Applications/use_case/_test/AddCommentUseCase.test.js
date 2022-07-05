@@ -15,12 +15,7 @@ describe('AddCommentUseCase', () => {
     const useCaseParams = {
       threadId: 'thread-123',
     };
-    const useCaseAuth = {
-      credentials: {
-        id: 'user-123',
-        username: 'dicoding',
-      },
-    };
+    const userId = 'user-123';
     const expectedAddedComment = new AddedComment({
       id: 'comment-123',
       content: 'a comment',
@@ -42,7 +37,7 @@ describe('AddCommentUseCase', () => {
 
     // Action
     const addedComment = await addCommentUseCase
-      .execute(useCasePayload, useCaseParams, useCaseAuth);
+      .execute(userId, useCaseParams, useCasePayload);
 
     // Assert
     expect(addedComment).toStrictEqual(expectedAddedComment);
@@ -52,7 +47,7 @@ describe('AddCommentUseCase', () => {
       .toBeCalledWith(new NewComment({
         ...useCasePayload,
         ...useCaseParams,
-        owner: useCaseAuth.credentials.id,
+        owner: userId,
         date,
       }));
   });

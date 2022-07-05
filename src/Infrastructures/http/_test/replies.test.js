@@ -211,7 +211,7 @@ describe('/threads/{threadId}/comments/{commentId}/replies endpoint', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(404);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('comment tidak ditemukan');
+      expect(responseJson.message).toEqual('komentar tidak ditemukan');
     });
 
     it('should response 400 when payload not contain needed property', async () => {
@@ -526,7 +526,7 @@ describe('/threads/{threadId}/comments/{commentId}/replies endpoint', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(404);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('comment tidak ditemukan');
+      expect(responseJson.message).toEqual('komentar tidak ditemukan');
     });
 
     it('should response 404 when reply not found', async () => {
@@ -690,7 +690,7 @@ describe('/threads/{threadId}/comments/{commentId}/replies endpoint', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(403);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('anda tidak memiliki hak akses');
+      expect(responseJson.message).toEqual('anda tidak memiliki hak akses untuk balasan ini');
     });
   });
 });
