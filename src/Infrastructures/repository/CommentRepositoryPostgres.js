@@ -57,7 +57,7 @@ class CommentRepositoryPostgres extends CommentRepository {
           U.username AS username,
           C.date AS date,
           C.content AS content,
-          C.is_deleted
+          C.is_deleted AS "isDeleted"
         FROM
           comments C
         INNER JOIN

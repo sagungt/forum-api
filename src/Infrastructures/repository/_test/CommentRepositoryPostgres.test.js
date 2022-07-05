@@ -188,21 +188,21 @@ describe('CommentRepositoryPostgres', () => {
       await CommentsTableTestHelper.addComment({
         id: 'comment-1',
         threadId: 'thread-1',
-        content: 'a comment',
+        content: 'comment 1',
         owner: 'user-123',
         date: 'now',
       });
       await CommentsTableTestHelper.addComment({
         id: 'comment-2',
         threadId: 'thread-1',
-        content: 'a comment',
+        content: 'comment 2',
         owner: 'user-123',
         date: 'now',
       });
       await CommentsTableTestHelper.addComment({
         id: 'comment-3',
         threadId: 'thread-2',
-        content: 'a comment',
+        content: 'comment 3',
         owner: 'user-123',
         date: 'now',
       });
@@ -214,6 +214,31 @@ describe('CommentRepositoryPostgres', () => {
       // Assert
       expect(comments1).toHaveLength(2);
       expect(comments2).toHaveLength(1);
+      expect(comments1).toStrictEqual([
+        {
+          id: 'comment-1',
+          username: 'dicoding',
+          date: 'now',
+          content: 'comment 1',
+          isDeleted: false,
+        },
+        {
+          id: 'comment-2',
+          username: 'dicoding',
+          date: 'now',
+          content: 'comment 2',
+          isDeleted: false,
+        },
+      ]);
+      expect(comments2).toStrictEqual([
+        {
+          id: 'comment-3',
+          username: 'dicoding',
+          date: 'now',
+          content: 'comment 3',
+          isDeleted: false,
+        },
+      ]);
     });
   });
 });
