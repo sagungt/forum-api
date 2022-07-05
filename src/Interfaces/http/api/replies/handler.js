@@ -10,9 +10,10 @@ class ReplyHandler {
   }
 
   async postReplyHandler(request, h) {
+    const { id: userId } = request.auth.credentials;
     const addReplyUseCase = this._container.getInstance(AddReplyUseCase.name);
     const addedReply = await addReplyUseCase.execute(
-      request.auth,
+      userId,
       request.params,
       request.payload,
     );

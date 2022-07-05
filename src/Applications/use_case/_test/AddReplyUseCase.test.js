@@ -17,12 +17,7 @@ describe('AddReplyUseCase', () => {
       threadId: 'thread-123',
       commentId: 'comment-123',
     };
-    const useCaseAuth = {
-      credentials: {
-        id: 'user-123',
-        username: 'dicoding',
-      },
-    };
+    const userId = 'user-123';
     const expectedAddedReply = new AddedReply({
       id: 'reply-123',
       content: 'a reply',
@@ -48,7 +43,7 @@ describe('AddReplyUseCase', () => {
 
     // Action
     const addedReply = await addReplyUseCase.execute(
-      useCaseAuth,
+      userId,
       useCaseParams,
       useCasePayload,
     );
@@ -64,7 +59,7 @@ describe('AddReplyUseCase', () => {
         ...useCasePayload,
         commentId: useCaseParams.commentId,
         date,
-        owner: useCaseAuth.credentials.id,
+        owner: userId,
       }));
   });
 });
