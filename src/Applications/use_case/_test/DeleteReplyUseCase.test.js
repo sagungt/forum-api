@@ -4,6 +4,36 @@ const CommentRepository = require('../../../Domains/comments/CommentRepository')
 const ThreadRepository = require('../../../Domains/threads/ThreadRepository');
 
 describe('DeleteReplyUseCase', () => {
+  it('should throw error if user id and reply owner not match', async () => {
+    // Arrange
+    const threadId = 'thread-123';
+    const commentId = 'comment-123';
+    const replyId = 'reply-123';
+    const userId = 'user-123';
+    const mockReplyRepository = new ReplyRepository();
+    const mockCommentRepository = new CommentRepository();
+    const mockThreadRepository = new ThreadRepository();
+
+    mockThreadRepository.checkAvailabilityThread = jest.fn()
+      .mockImplementation(() => Promise.resolve());
+    mockCommentRepository.checkAvailabilityComment = jest.fn()
+      .mockImplementation(() => Promise.resolve());
+    mockReplyRepository.checkAvailabilityReply = jest.fn()
+      .mockImplementation(() => Promise.resolve({ owner: 'user-321' }));
+    mockReplyRepository.softDeleteReplyById = jest.fn()
+      .mockImplementation(() => Promise.resolve());
+
+    const deleteReplyUseCase = new DeleteReplyUseCase({
+      replyRepository: mockReplyRepository,
+      commentRepository: mockCommentRepository,
+      threadRepository: mockThreadRepository,
+    });
+
+    // Action & Assert
+    await expect(deleteReplyUseCase.execute(userId, threadId, commentId, replyId))
+      .rejects.toThrowError('DELETE_REPLY.INVALID_OWNERSHIP');
+  });
+
   it('should orchestrating the delete reply action correctly', async () => {
     // Arrange
     const threadId = 'thread-123';

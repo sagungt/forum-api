@@ -1,6 +1,5 @@
 const ThreadsTableTestHelper = require('../../../../tests/ThreadsTableTestHelper');
 const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
-const InvariantError = require('../../../Commons/exceptions/InvariantError');
 const NewThread = require('../../../Domains/threads/entities/NewThread');
 const AddedThread = require('../../../Domains/threads/entities/AddedThread');
 const pool = require('../../database/postgres/pool');
@@ -64,13 +63,13 @@ describe('ThreadRepositoryPostgres', () => {
   });
 
   describe('getThreadById function', () => {
-    it('should throw InvariantError when thread not found', async () => {
+    it('should throw NotFoundError when thread not found', async () => {
       // Arrange
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
 
       // Action & Assert
       await expect(threadRepositoryPostgres.findThreadById('thread-123'))
-        .rejects.toThrowError(InvariantError);
+        .rejects.toThrowError(NotFoundError);
     });
 
     it('should return correct thread data when thread is found', async () => {

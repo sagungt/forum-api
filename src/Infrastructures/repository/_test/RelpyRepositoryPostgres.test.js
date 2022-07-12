@@ -172,35 +172,35 @@ describe('ReplyRepositoryPostgres', () => {
         threadId: 'thread-123',
         content: 'a comment',
         owner: 'user-123',
-        date: 'now',
+        date: 'now1',
       });
       await CommentsTableTestHelper.addComment({
         id: 'comment-1234',
         threadId: 'thread-123',
         content: 'a comment',
         owner: 'user-123',
-        date: 'now',
+        date: 'now2',
       });
       await RepliesTableTestHelper.addReply({
         id: 'reply-123',
         commentId: 'comment-123',
         content: 'a comment',
         owner: 'user-123',
-        date: 'now',
+        date: 'now1',
       });
       await RepliesTableTestHelper.addReply({
         id: 'reply-1234',
         commentId: 'comment-123',
         content: 'a comment',
         owner: 'user-123',
-        date: 'now',
+        date: 'now2',
       });
       await RepliesTableTestHelper.addReply({
         id: 'reply-12345',
         commentId: 'comment-1234',
         content: 'a comment',
         owner: 'user-123',
-        date: 'now',
+        date: 'now3',
       });
 
       // Action
@@ -212,6 +212,50 @@ describe('ReplyRepositoryPostgres', () => {
       // Assert
       expect(replies1).toHaveLength(3);
       expect(replies2).toHaveLength(2);
+      expect(replies1).toStrictEqual([
+        {
+          id: 'reply-123',
+          content: 'a comment',
+          date: 'now1',
+          username: 'dicoding',
+          commentId: 'comment-123',
+          isDeleted: false,
+        },
+        {
+          id: 'reply-1234',
+          content: 'a comment',
+          date: 'now2',
+          username: 'dicoding',
+          commentId: 'comment-123',
+          isDeleted: false,
+        },
+        {
+          id: 'reply-12345',
+          content: 'a comment',
+          date: 'now3',
+          username: 'dicoding',
+          commentId: 'comment-1234',
+          isDeleted: false,
+        },
+      ]);
+      expect(replies2).toStrictEqual([
+        {
+          id: 'reply-123',
+          content: 'a comment',
+          date: 'now1',
+          username: 'dicoding',
+          commentId: 'comment-123',
+          isDeleted: false,
+        },
+        {
+          id: 'reply-1234',
+          content: 'a comment',
+          date: 'now2',
+          username: 'dicoding',
+          commentId: 'comment-123',
+          isDeleted: false,
+        },
+      ]);
     });
   });
 });
