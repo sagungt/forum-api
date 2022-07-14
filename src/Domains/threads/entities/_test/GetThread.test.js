@@ -32,7 +32,7 @@ describe('GetThread entities', () => {
       id: 'thread-123',
       title: 'a thread',
       body: 'thread content',
-      date: 'now',
+      date: '2022-07-14 21:10:56.950863',
       username: 'dicoding',
     };
 
@@ -44,7 +44,7 @@ describe('GetThread entities', () => {
     expect(getThread.id).toEqual(payload.id);
     expect(getThread.title).toEqual(payload.title);
     expect(getThread.body).toEqual(payload.body);
-    expect(getThread.date).toEqual(payload.date);
+    expect(getThread.date).toEqual(new Date(payload.date).toISOString());
     expect(getThread.username).toEqual(payload.username);
   });
 });

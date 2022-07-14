@@ -8,15 +8,13 @@ class GetThread {
     this.id = id;
     this.title = title;
     this.body = body;
-    this.date = date;
+    this.date = new Date(date).toISOString();
     this.username = username;
   }
 
-  _verifyPayload(payload) {
-    const {
-      id, title, body, date, username,
-    } = payload;
-
+  _verifyPayload({
+    id, title, body, date, username,
+  }) {
     if (
       !id
       || !title

@@ -3,11 +3,9 @@ const AddedThread = require('../../../Domains/threads/entities/AddedThread');
 const ThreadRepository = require('../../../Domains/threads/ThreadRepository');
 const AddThreadUseCase = require('../AddThreadUseCase');
 
-jest.useFakeTimers();
 describe('AddThreadUseCase', () => {
   it('it should orchestrating the add thread action correctly', async () => {
     // Arrange
-    const date = new Date().toISOString();
     const useCasePayload = {
       title: 'a thread',
       body: 'thread description',
@@ -34,6 +32,6 @@ describe('AddThreadUseCase', () => {
     // Assert
     expect(addedThread).toStrictEqual(expectedAddedThread);
     expect(mockThreadRepository.addThread)
-      .toBeCalledWith(new NewThread({ ...useCasePayload, date }));
+      .toBeCalledWith(new NewThread({ ...useCasePayload }));
   });
 });

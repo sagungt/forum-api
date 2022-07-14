@@ -16,6 +16,7 @@ describe('NewThread entities', () => {
     const payload = {
       title: 'a thread',
       body: ['thread content'],
+      owner: 'user-123',
     };
 
     // Action & Assert
@@ -27,7 +28,6 @@ describe('NewThread entities', () => {
     const payload = {
       title: 'a thread',
       body: 'thread content',
-      date: 'now',
       owner: 'user-123',
     };
 
@@ -38,7 +38,6 @@ describe('NewThread entities', () => {
     expect(newThread).toBeInstanceOf(NewThread);
     expect(newThread.title).toEqual(payload.title);
     expect(newThread.body).toEqual(payload.body);
-    expect(newThread.date).toEqual(payload.date);
     expect(newThread.owner).toEqual(payload.owner);
   });
 });

@@ -23,7 +23,6 @@ describe('ThreadRepositoryPostgres', () => {
       const newThread = new NewThread({
         title: 'a thread',
         body: 'thread content',
-        date: new Date().toISOString(),
         owner: 'user-123',
       });
       const fakeIdGenerator = () => '123';
@@ -43,7 +42,6 @@ describe('ThreadRepositoryPostgres', () => {
       const newThread = new NewThread({
         title: 'a thread',
         body: 'thread content',
-        date: new Date().toISOString(),
         owner: 'user-123',
       });
       const fakeIdGenerator = () => '123';
@@ -74,11 +72,9 @@ describe('ThreadRepositoryPostgres', () => {
 
     it('should return correct thread data when thread is found', async () => {
       // Arrange
-      const date = new Date().toISOString();
       const newThread = new NewThread({
         title: 'a thread',
         body: 'thread content',
-        date,
         owner: 'user-123',
       });
       const fakeIdGenerator = () => '123';
@@ -95,7 +91,7 @@ describe('ThreadRepositoryPostgres', () => {
         id: 'thread-123',
         title: 'a thread',
         body: 'thread content',
-        date,
+        date: getThread.date, // date invoked in database
         username: 'dicoding',
       }));
     });
