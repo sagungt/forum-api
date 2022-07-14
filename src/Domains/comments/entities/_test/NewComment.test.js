@@ -6,7 +6,6 @@ describe('NewComment entities', () => {
     const payload = {
       content: 'comment',
       threadId: 'thread-123',
-      date: 'now',
     };
 
     // Action & Arrange
@@ -18,7 +17,6 @@ describe('NewComment entities', () => {
     const payload = {
       content: 'a comment',
       threadId: 'thread-123',
-      date: 'now',
       owner: 123,
     };
 
@@ -31,7 +29,6 @@ describe('NewComment entities', () => {
     const payload = {
       content: 'a comment',
       threadId: 'thread-123',
-      date: 'now',
       owner: 'user-123',
     };
 
@@ -42,8 +39,6 @@ describe('NewComment entities', () => {
     expect(newComment).toBeInstanceOf(NewComment);
     expect(newComment.content).toEqual(payload.content);
     expect(newComment.threadId).toEqual(payload.threadId);
-    expect(newComment.date).toEqual(payload.date);
     expect(newComment.owner).toEqual(payload.owner);
-    expect(newComment.isDeleted).toEqual(false);
   });
 });

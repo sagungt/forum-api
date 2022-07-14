@@ -8,7 +8,6 @@ jest.useFakeTimers();
 describe('AddCommentUseCase', () => {
   it('should orchestrating the add comment action correctly', async () => {
     // Arrange
-    const date = new Date().toISOString();
     const useCasePayload = {
       content: 'a comment',
     };
@@ -46,7 +45,6 @@ describe('AddCommentUseCase', () => {
         ...useCasePayload,
         threadId,
         owner: userId,
-        date,
       }));
   });
 });

@@ -31,7 +31,7 @@ describe('GetComment entities', () => {
     const payload = {
       id: 'comment-123',
       username: 'dicoding',
-      date: 'now',
+      date: '2022-07-14 21:10:56.950863',
       content: 'a comment',
       isDeleted: false,
     };
@@ -43,16 +43,16 @@ describe('GetComment entities', () => {
     expect(getComment).toBeInstanceOf(GetComment);
     expect(getComment.id).toEqual(payload.id);
     expect(getComment.username).toEqual(payload.username);
-    expect(getComment.date).toEqual(payload.date);
+    expect(getComment.date).toEqual(new Date(payload.date).toISOString());
     expect(getComment.content).toEqual(payload.content);
   });
 
-  it('should create GetComment entity with soft deleted correctly', () => {
+  it('should create GetComment entity with deleted comment correctly', () => {
     // Arrange
     const payload = {
       id: 'comment-123',
       username: 'dicoding',
-      date: 'now',
+      date: '2022-07-14 21:10:56.950863',
       content: 'a comment',
       isDeleted: true,
     };
@@ -64,7 +64,7 @@ describe('GetComment entities', () => {
     expect(getComment).toBeInstanceOf(GetComment);
     expect(getComment.id).toEqual(payload.id);
     expect(getComment.username).toEqual(payload.username);
-    expect(getComment.date).toEqual(payload.date);
+    expect(getComment.date).toEqual(new Date(payload.date).toISOString());
     expect(getComment.content).toEqual('**komentar telah dihapus**');
   });
 });

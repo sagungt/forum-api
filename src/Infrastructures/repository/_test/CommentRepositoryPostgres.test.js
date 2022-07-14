@@ -24,7 +24,6 @@ describe('CommentRepositoryPostgres', () => {
       const newComment = new NewComment({
         content: 'a comment',
         threadId: 'thread-123',
-        date: new Date().toISOString(),
         owner: 'user-123',
       });
       const fakeIdGenerator = () => '123';
@@ -55,7 +54,6 @@ describe('CommentRepositoryPostgres', () => {
       const newComment = new NewComment({
         content: 'a comment',
         threadId: 'thread-123',
-        date: new Date().toISOString(),
         owner: 'user-123',
       });
       const fakeIdGenerator = () => '123';
@@ -190,21 +188,18 @@ describe('CommentRepositoryPostgres', () => {
         threadId: 'thread-1',
         content: 'comment 1',
         owner: 'user-123',
-        date: 'now1',
       });
       await CommentsTableTestHelper.addComment({
         id: 'comment-2',
         threadId: 'thread-1',
         content: 'comment 2',
         owner: 'user-123',
-        date: 'now2',
       });
       await CommentsTableTestHelper.addComment({
         id: 'comment-3',
         threadId: 'thread-2',
         content: 'comment 3',
         owner: 'user-123',
-        date: 'now3',
       });
 
       // Action
@@ -218,14 +213,14 @@ describe('CommentRepositoryPostgres', () => {
         {
           id: 'comment-1',
           username: 'dicoding',
-          date: 'now1',
+          date: comments1[0].date, // date invoked in database
           content: 'comment 1',
           isDeleted: false,
         },
         {
           id: 'comment-2',
           username: 'dicoding',
-          date: 'now2',
+          date: comments1[1].date,
           content: 'comment 2',
           isDeleted: false,
         },
@@ -234,7 +229,7 @@ describe('CommentRepositoryPostgres', () => {
         {
           id: 'comment-3',
           username: 'dicoding',
-          date: 'now3',
+          date: comments2[0].date,
           content: 'comment 3',
           isDeleted: false,
         },

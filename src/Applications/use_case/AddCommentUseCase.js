@@ -8,9 +8,8 @@ class AddCommentUseCase {
 
   async execute(userId, threadId, useCasePayload) {
     await this._threadRepository.checkAvailabilityThread(threadId);
-    const date = new Date().toISOString();
     const newComment = new NewComment({
-      ...useCasePayload, threadId, date, owner: userId,
+      ...useCasePayload, threadId, owner: userId,
     });
     return this._commentRepository.addComment(newComment);
   }

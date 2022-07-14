@@ -39,7 +39,10 @@ class ThreadRepositoryPostgres extends ThreadRepository {
           t.id AS id,
           t.title AS title,
           t.body AS body,
-          TO_CHAR(t.date::timestamp at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS"Z"') AS date,
+          TO_CHAR(
+            t.date::timestamp at time zone 'UTC',
+            'YYYY-MM-DD"T"HH24:MI:SS"Z"'
+          ) AS date,
           u.username AS username
         FROM
           threads t

@@ -10,14 +10,16 @@ class CommentRepositoryPostgres extends CommentRepository {
   }
 
   async addComment(newComment) {
-    const {
-      content, threadId, date, owner, isDeleted,
-    } = newComment;
+    const { content, threadId, owner } = newComment;
     const id = `comment-${this._idGenerator()}`;
 
     const query = {
-      text: 'INSERT INTO comments VALUES($1, $2, $3, $4, $5, $6) RETURNING id, content, owner',
-      values: [id, threadId, content, date, owner, isDeleted],
+      text: `
+        INSERT INTO
+          comments(id, thread_id, content, owner)
+          VALUES($1, $2, $3, $4)
+        RETURNING id, content, owner`,
+      values: [id, threadId, content, owner],
     };
 
     const result = await this._pool.query(query);
@@ -55,7 +57,10 @@ class CommentRepositoryPostgres extends CommentRepository {
         SELECT
           C.id AS id,
           U.username AS username,
-          C.date AS date,
+          TO_CHAR(
+            C.date::timestamp at time zone 'UTC',
+            'YYYY-MM-DD"T"HH24:MI:SS"Z"'
+          ) AS date,
           C.content AS content,
           C.is_deleted AS "isDeleted"
         FROM

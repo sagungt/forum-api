@@ -7,7 +7,7 @@ class GetComment {
 
     this.id = id;
     this.username = username;
-    this.date = date;
+    this.date = new Date(date).toISOString();
     this.content = isDeleted ? '**komentar telah dihapus**' : content;
   }
 
