@@ -31,7 +31,7 @@ describe('GetReply entities', () => {
     const payload = {
       id: 'comment-123',
       username: 'dicoding',
-      date: 'now',
+      date: '2022-07-14',
       content: 'a comment',
       isDeleted: false,
     };
@@ -43,16 +43,16 @@ describe('GetReply entities', () => {
     expect(getReply).toBeInstanceOf(GetReply);
     expect(getReply.id).toEqual(payload.id);
     expect(getReply.username).toEqual(payload.username);
-    expect(getReply.date).toEqual(payload.date);
+    expect(getReply.date).toEqual(new Date(payload.date).toISOString());
     expect(getReply.content).toEqual(payload.content);
   });
 
-  it('should create GetReply entity with soft deleted correctly', () => {
+  it('should create GetReply entity with deleted reply correctly', () => {
     // Arrange
     const payload = {
       id: 'comment-123',
       username: 'dicoding',
-      date: 'now',
+      date: '2022-07-14',
       content: 'a comment',
       isDeleted: true,
     };
@@ -64,7 +64,7 @@ describe('GetReply entities', () => {
     expect(getReply).toBeInstanceOf(GetReply);
     expect(getReply.id).toEqual(payload.id);
     expect(getReply.username).toEqual(payload.username);
-    expect(getReply.date).toEqual(payload.date);
+    expect(getReply.date).toEqual(new Date(payload.date).toISOString());
     expect(getReply.content).toEqual('**balasan telah dihapus**');
   });
 });

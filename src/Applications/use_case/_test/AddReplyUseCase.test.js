@@ -9,7 +9,6 @@ jest.useFakeTimers();
 describe('AddReplyUseCase', () => {
   it('should orchestrating the add reply action correctly', async () => {
     // Arrange
-    const date = new Date().toISOString();
     const useCasePayload = {
       content: 'a reply',
     };
@@ -57,7 +56,6 @@ describe('AddReplyUseCase', () => {
       .toBeCalledWith(new NewReply({
         ...useCasePayload,
         commentId,
-        date,
         owner: userId,
       }));
   });

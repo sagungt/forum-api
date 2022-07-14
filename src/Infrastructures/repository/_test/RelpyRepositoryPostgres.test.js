@@ -25,7 +25,6 @@ describe('ReplyRepositoryPostgres', () => {
       const newReply = new NewReply({
         content: 'a reply',
         commentId: 'comment-123',
-        date: 'now',
         owner: 'user-123',
       });
       const fakeIdGenerator = () => '123';
@@ -48,7 +47,6 @@ describe('ReplyRepositoryPostgres', () => {
         id: 'comment-123',
         threadId: 'thread-123',
         content: 'a comment',
-        date: 'now',
         owner: 'user-123',
       });
       await replyRepositoryPostgres.addReply(newReply);
@@ -172,35 +170,30 @@ describe('ReplyRepositoryPostgres', () => {
         threadId: 'thread-123',
         content: 'a comment',
         owner: 'user-123',
-        date: 'now1',
       });
       await CommentsTableTestHelper.addComment({
         id: 'comment-1234',
         threadId: 'thread-123',
         content: 'a comment',
         owner: 'user-123',
-        date: 'now2',
       });
       await RepliesTableTestHelper.addReply({
         id: 'reply-123',
         commentId: 'comment-123',
         content: 'a comment',
         owner: 'user-123',
-        date: 'now1',
       });
       await RepliesTableTestHelper.addReply({
         id: 'reply-1234',
         commentId: 'comment-123',
         content: 'a comment',
         owner: 'user-123',
-        date: 'now2',
       });
       await RepliesTableTestHelper.addReply({
         id: 'reply-12345',
         commentId: 'comment-1234',
         content: 'a comment',
         owner: 'user-123',
-        date: 'now3',
       });
 
       // Action
@@ -216,7 +209,7 @@ describe('ReplyRepositoryPostgres', () => {
         {
           id: 'reply-123',
           content: 'a comment',
-          date: 'now1',
+          date: replies1[0].date, // date invoked in database
           username: 'dicoding',
           commentId: 'comment-123',
           isDeleted: false,
@@ -224,7 +217,7 @@ describe('ReplyRepositoryPostgres', () => {
         {
           id: 'reply-1234',
           content: 'a comment',
-          date: 'now2',
+          date: replies1[1].date, // date invoked in database
           username: 'dicoding',
           commentId: 'comment-123',
           isDeleted: false,
@@ -232,7 +225,7 @@ describe('ReplyRepositoryPostgres', () => {
         {
           id: 'reply-12345',
           content: 'a comment',
-          date: 'now3',
+          date: replies1[2].date, // date invoked in database
           username: 'dicoding',
           commentId: 'comment-1234',
           isDeleted: false,
@@ -242,7 +235,7 @@ describe('ReplyRepositoryPostgres', () => {
         {
           id: 'reply-123',
           content: 'a comment',
-          date: 'now1',
+          date: replies2[0].date, // date invoked in database
           username: 'dicoding',
           commentId: 'comment-123',
           isDeleted: false,
@@ -250,7 +243,7 @@ describe('ReplyRepositoryPostgres', () => {
         {
           id: 'reply-1234',
           content: 'a comment',
-          date: 'now2',
+          date: replies2[1].date, // date invoked in database
           username: 'dicoding',
           commentId: 'comment-123',
           isDeleted: false,

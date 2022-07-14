@@ -11,7 +11,7 @@ describe('GetThreadUseCase', () => {
       id: 'thread-123',
       title: 'a thread',
       body: 'thread content',
-      date: 'now',
+      date: new Date('2022-07-14').toISOString(),
       username: 'dicoding',
     };
 
@@ -25,7 +25,7 @@ describe('GetThreadUseCase', () => {
         id: 'thread-123',
         title: 'a thread',
         body: 'thread content',
-        date: 'now',
+        date: new Date('2022-07-14').toISOString(),
         username: 'dicoding',
       }));
     mockCommentRepository.findCommentsByThreadId = jest.fn()
@@ -52,13 +52,13 @@ describe('GetThreadUseCase', () => {
       id: 'thread-123',
       title: 'a thread',
       body: 'thread content',
-      date: 'now',
+      date: new Date('2022-07-14').toISOString(),
       username: 'dicoding',
       comments: [
         {
           id: 'comment-123',
           username: 'dicoding',
-          date: 'now',
+          date: new Date('2022-07-14').toISOString(),
           content: 'a comment 1',
         },
       ],
@@ -75,7 +75,7 @@ describe('GetThreadUseCase', () => {
         id: 'thread-123',
         title: 'a thread',
         body: 'thread content',
-        date: 'now',
+        date: new Date('2022-07-14').toISOString(),
         username: 'dicoding',
       }));
     mockCommentRepository.findCommentsByThreadId = jest.fn()
@@ -83,7 +83,7 @@ describe('GetThreadUseCase', () => {
         {
           id: 'comment-123',
           username: 'dicoding',
-          date: 'now',
+          date: new Date('2022-07-14').toISOString(),
           content: 'a comment 1',
           owner: 'user-123',
           isDeleted: false,
@@ -95,7 +95,7 @@ describe('GetThreadUseCase', () => {
           id: 'reply-1234',
           commentId: 'comment-1234',
           content: 'a reply 2',
-          date: 'now',
+          date: new Date('2022-07-14').toISOString(),
           owner: 'user-123',
           username: 'dicoding',
           isDeleted: false,
@@ -124,19 +124,19 @@ describe('GetThreadUseCase', () => {
       id: 'thread-123',
       title: 'a thread',
       body: 'thread content',
-      date: 'now',
+      date: new Date('2022-07-14').toISOString(),
       username: 'dicoding',
       comments: [
         {
           id: 'comment-123',
           username: 'dicoding',
-          date: 'now',
+          date: new Date('2022-07-14').toISOString(),
           content: 'a comment 1',
           replies: [
             {
               id: 'reply-123',
               content: 'a reply 1',
-              date: 'now',
+              date: new Date('2022-07-14').toISOString(),
               username: 'dicoding',
             },
           ],
@@ -144,13 +144,13 @@ describe('GetThreadUseCase', () => {
         {
           id: 'comment-321',
           username: 'dicoding',
-          date: 'now',
+          date: new Date('2022-07-14').toISOString(),
           content: '**komentar telah dihapus**',
           replies: [
             {
               id: 'reply-321',
               content: '**balasan telah dihapus**',
-              date: 'now',
+              date: new Date('2022-07-14').toISOString(),
               username: 'dicoding',
             },
           ],
@@ -168,7 +168,7 @@ describe('GetThreadUseCase', () => {
         id: 'thread-123',
         title: 'a thread',
         body: 'thread content',
-        date: 'now',
+        date: new Date('2022-07-14').toISOString(),
         username: 'dicoding',
       }));
     mockCommentRepository.findCommentsByThreadId = jest.fn()
@@ -176,14 +176,14 @@ describe('GetThreadUseCase', () => {
         {
           id: 'comment-123',
           username: 'dicoding',
-          date: 'now',
+          date: new Date('2022-07-14').toISOString(),
           content: 'a comment 1',
           isDeleted: false,
         },
         {
           id: 'comment-321',
           username: 'dicoding',
-          date: 'now',
+          date: new Date('2022-07-14').toISOString(),
           content: 'a comment 2',
           isDeleted: true,
         },
@@ -194,7 +194,7 @@ describe('GetThreadUseCase', () => {
           id: 'reply-123',
           commentId: 'comment-123',
           content: 'a reply 1',
-          date: 'now',
+          date: new Date('2022-07-14').toISOString(),
           username: 'dicoding',
           isDeleted: false,
         },
@@ -202,7 +202,7 @@ describe('GetThreadUseCase', () => {
           id: 'reply-321',
           commentId: 'comment-321',
           content: 'a reply 2',
-          date: 'now',
+          date: new Date('2022-07-14').toISOString(),
           username: 'dicoding',
           isDeleted: true,
         },

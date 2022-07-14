@@ -6,7 +6,6 @@ describe('NewReply entities', () => {
     const payload = {
       content: 'a reply',
       commentId: 'comment-123',
-      date: 'now',
     };
 
     // Action & Arrange
@@ -18,7 +17,6 @@ describe('NewReply entities', () => {
     const payload = {
       content: 'a reply',
       commentId: 'comment-123',
-      date: 'now',
       owner: 123,
     };
 
@@ -31,7 +29,6 @@ describe('NewReply entities', () => {
     const payload = {
       content: 'a reply',
       commentId: 'comment-123',
-      date: 'now',
       owner: 'user-123',
     };
 
@@ -42,8 +39,6 @@ describe('NewReply entities', () => {
     expect(newReply).toBeInstanceOf(NewReply);
     expect(newReply.content).toEqual(payload.content);
     expect(newReply.commentId).toEqual(payload.commentId);
-    expect(newReply.date).toEqual(payload.date);
     expect(newReply.owner).toEqual(payload.owner);
-    expect(newReply.isDeleted).toEqual(false);
   });
 });

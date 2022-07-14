@@ -11,18 +11,22 @@ class ReplyRepositoryPostgres extends ReplyRepository {
 
   async addReply(newReply) {
     const {
-      commentId, content, date, owner, isDeleted,
+      commentId, content, owner, isDeleted,
     } = newReply;
     const id = `reply-${this._idGenerator()}`;
 
     const query = {
-      text: 'INSERT INTO replies VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, content, owner',
-      values: [id, commentId, content, date, owner, isDeleted],
+      text: `
+        INSERT INTO
+        replies(id, comment_id, content, owner)
+        VALUES($1, $2, $3, $4)
+      RETURNING id, content, owner`,
+      values: [id, commentId, content, owner],
     };
 
     const result = await this._pool.query(query);
 
-    return new AddedReply({ ...result.rows[0] });
+    return new AddedReply(result.rows[0]);
   }
 
   async checkAvailabilityReply(id) {
@@ -55,7 +59,10 @@ class ReplyRepositoryPostgres extends ReplyRepository {
         SELECT
           R.id AS id,
           R.content AS content,
-          R.date AS date,
+          TO_CHAR(
+            R.date::timestamp at time zone 'UTC',
+            'YYYY-MM-DD"T"HH24:MI:SS"Z"'
+          ) AS date,
           U.username AS username,
           R.comment_id AS "commentId",
           R.is_deleted AS "isDeleted"

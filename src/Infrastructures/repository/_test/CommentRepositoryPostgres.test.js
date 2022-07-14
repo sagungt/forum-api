@@ -220,7 +220,7 @@ describe('CommentRepositoryPostgres', () => {
         {
           id: 'comment-2',
           username: 'dicoding',
-          date: comments1[1].date,
+          date: comments1[1].date, // date invoked in database
           content: 'comment 2',
           isDeleted: false,
         },

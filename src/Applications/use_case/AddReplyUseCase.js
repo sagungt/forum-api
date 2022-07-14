@@ -15,11 +15,9 @@ class AddReplyUseCase {
     await this._threadRepository.checkAvailabilityThread(threadId);
     await this._commentRepository.checkAvailabilityComment(commentId);
     const { content } = useCasePayload;
-    const date = new Date().toISOString();
     const newReply = new NewReply({
       commentId,
       content,
-      date,
       owner: userId,
     });
     return this._replyRepository.addReply(newReply);
