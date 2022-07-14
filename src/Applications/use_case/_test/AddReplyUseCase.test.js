@@ -5,7 +5,6 @@ const ThreadRepository = require('../../../Domains/threads/ThreadRepository');
 const AddReplyUseCase = require('../AddReplyUseCase');
 const NewReply = require('../../../Domains/replies/entities/NewReply');
 
-jest.useFakeTimers();
 describe('AddReplyUseCase', () => {
   it('should orchestrating the add reply action correctly', async () => {
     // Arrange

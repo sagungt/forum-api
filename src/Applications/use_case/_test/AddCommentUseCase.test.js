@@ -4,7 +4,6 @@ const CommentRepository = require('../../../Domains/comments/CommentRepository')
 const ThreadRepository = require('../../../Domains/threads/ThreadRepository');
 const AddCommentUseCase = require('../AddCommentUseCase');
 
-jest.useFakeTimers();
 describe('AddCommentUseCase', () => {
   it('should orchestrating the add comment action correctly', async () => {
     // Arrange
