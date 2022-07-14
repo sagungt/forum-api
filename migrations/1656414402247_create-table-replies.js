@@ -8,27 +8,30 @@ exports.up = (pgm) => {
     comment_id: {
       type: 'VARCHAR(50)',
       notNull: true,
+      references: 'comments',
+      onDelete: 'CASCADE',
     },
     content: {
       type: 'TEXT',
       notNull: true,
     },
     date: {
-      type: 'TEXT',
+      type: 'timestamp',
       notNull: true,
+      default: pgm.func('current_timestamp'),
     },
     owner: {
       type: 'VARCHAR(50)',
       notNull: true,
+      references: 'users',
+      onDelete: 'CASCADE',
     },
     is_deleted: {
       type: 'BOOLEAN',
       notNull: true,
+      default: false,
     },
   });
-
-  pgm.addConstraint('comments', 'fk_replies.comment_id_comments.id', 'FOREIGN KEY(thread_id) REFERENCES threads(id) ON DELETE CASCADE');
-  pgm.addConstraint('comments', 'fk_replies.owner_users.id', 'FOREIGN KEY(owner) REFERENCES users(id) ON DELETE CASCADE');
 };
 
 exports.down = (pgm) => {

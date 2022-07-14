@@ -14,16 +14,17 @@ exports.up = (pgm) => {
       notNull: true,
     },
     date: {
-      type: 'TEXT',
+      type: 'timestamp',
       notNull: true,
+      default: pgm.func('current_timestamp'),
     },
     owner: {
       type: 'VARCHAR(50)',
       notNull: true,
+      references: 'users',
+      onDelete: 'CASCADE',
     },
   });
-
-  pgm.addConstraint('threads', 'fk_threads.owner_users.id', 'FOREIGN KEY(owner) REFERENCES users(id) ON DELETE CASCADE');
 };
 
 exports.down = (pgm) => {
