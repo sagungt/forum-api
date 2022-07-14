@@ -6,9 +6,7 @@ class NewAuth {
     this.refreshToken = payload.refreshToken;
   }
 
-  _verifyPayload(payload) {
-    const { accessToken, refreshToken } = payload;
-
+  _verifyPayload({ accessToken, refreshToken }) {
     if (!accessToken || !refreshToken) {
       throw new Error('NEW_AUTH.NOT_CONTAIN_NEEDED_PROPERTY');
     }

@@ -8,9 +8,7 @@ class AddedComment {
     this.owner = owner;
   }
 
-  _verifyPayload(payload) {
-    const { id, content, owner } = payload;
-
+  _verifyPayload({ id, content, owner }) {
     if (!id || !content || !owner) {
       throw new Error('ADDED_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY');
     }

@@ -6,9 +6,7 @@ class UserLogin {
     this.password = payload.password;
   }
 
-  _verifyPayload(payload) {
-    const { username, password } = payload;
-
+  _verifyPayload({ username, password }) {
     if (!username || !password) {
       throw new Error('USER_LOGIN.NOT_CONTAIN_NEEDED_PROPERTY');
     }

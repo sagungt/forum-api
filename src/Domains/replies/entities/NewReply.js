@@ -12,11 +12,9 @@ class NewReply {
     this.isDeleted = false;
   }
 
-  _verifyPayload(payload) {
-    const {
-      content, commentId, date, owner,
-    } = payload;
-
+  _verifyPayload({
+    content, commentId, date, owner,
+  }) {
     if (
       !content
       || !commentId

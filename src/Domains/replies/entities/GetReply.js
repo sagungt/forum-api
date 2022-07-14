@@ -11,11 +11,9 @@ class GetReply {
     this.content = isDeleted ? '**balasan telah dihapus**' : content;
   }
 
-  _verifyPayload(payload) {
-    const {
-      id, username, date, content, isDeleted,
-    } = payload;
-
+  _verifyPayload({
+    id, username, date, content, isDeleted,
+  }) {
     if (
       !id || !username || !date || !content || isDeleted === undefined || isDeleted === null
     ) {
