@@ -10,14 +10,11 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres:latest
+        image: postgres
         env:
           POSTGRES_DB: ${{ secrets.PGDATABASE_TEST }}
           POSTGRES_PASSWORD: ${{ secrets.PGPASSWORD_TEST }}
-          POSTGRES_PORT: ${{ secrets.PGPORT_TEST }}
           POSTGRES_USER: ${{ secrets.PGUSER_TEST }}
-        ports:
-          - 5432:5432
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -39,15 +36,15 @@ jobs:
           npm run test
         env:
           CI: true
-          PGHOST_TEST: ${{ secrets.PGHOST_TEST }}
+          PGHOST_TEST: postgres
           PGUSER_TEST: ${{ secrets.PGUSER_TEST }}
           PGDATABASE_TEST: ${{ secrets.PGDATABASE_TEST }}
           PGPASSWORD_TEST: ${{ secrets.PGPASSWORD_TEST }}
-          PGPORT_TEST: ${{ secrets.PGPORT_TEST }}
-          PGHOST: ${{ secrets.PGHOST_TEST }}
+          PGPORT_TEST: 5432
+          PGHOST: postgres
           PGUSER: ${{ secrets.PGUSER_TEST }}
           PGDATABASE: ${{ secrets.PGDATABASE_TEST }}
           PGPASSWORD: ${{ secrets.PGPASSWORD_TEST }}
-          PGPORT: ${{ secrets.PGPORT_TEST }}
+          PGPORT: 5432
           ACCESS_TOKEN_KEY: ${{ secrets.ACCESS_TOKEN_KEY }}
           REFRESH_TOKEN_KEY: ${{ secrets.REFRESH_TOKEN_KEY }}
