@@ -45,6 +45,7 @@ jobs:
           echo ACCESS_TOKEN_KEY=${{ secrets.ACCESS_TOKEN_KEY }} >> .env
           echo REFRESH_TOKEN_KEY=${{ secrets.REFRESH_TOKEN_KEY }} >> .env
           echo ACCESS_TOKEN_AGE=${{ secrets.ACCESS_TOKEN_AGE }} >> .env
+          cat .env
       - name: Install, Migrate and Test
         run: |
           npm install
