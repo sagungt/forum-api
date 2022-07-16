@@ -1,13 +1,20 @@
-class DeleteCommentUseCase {
-  constructor({
-    commentRepository,
-    threadRepository,
-  }) {
+const NewComment = require('../../Domains/comments/entities/NewComment');
+
+class CommentUseCase {
+  constructor({ commentRepository, threadRepository }) {
     this._commentRepository = commentRepository;
     this._threadRepository = threadRepository;
   }
 
-  async execute(userId, threadId, commentId) {
+  async addComment(userId, threadId, useCasePayload) {
+    await this._threadRepository.checkAvailabilityThread(threadId);
+    const newComment = new NewComment({
+      ...useCasePayload, threadId, owner: userId,
+    });
+    return this._commentRepository.addComment(newComment);
+  }
+
+  async deleteComment(userId, threadId, commentId) {
     await this._threadRepository.checkAvailabilityThread(threadId);
     await this._verifyOwner(userId, commentId);
     await this._commentRepository.softDeleteCommentById(commentId);
@@ -23,4 +30,4 @@ class DeleteCommentUseCase {
   }
 }
 
-module.exports = DeleteCommentUseCase;
+module.exports = CommentUseCase;

@@ -1,4 +1,4 @@
-class RefreshAuthenticationUseCase {
+class AuthenticationUseCase {
   constructor({
     authenticationRepository,
     authenticationTokenManager,
@@ -7,8 +7,8 @@ class RefreshAuthenticationUseCase {
     this._authenticationTokenManager = authenticationTokenManager;
   }
 
-  async execute(useCasePayload) {
-    this._verifyPayload(useCasePayload);
+  async refreshAuthentication(useCasePayload) {
+    this._validatePayload(useCasePayload);
     const { refreshToken } = useCasePayload;
 
     await this._authenticationTokenManager.verifyRefreshToken(refreshToken);
@@ -19,17 +19,22 @@ class RefreshAuthenticationUseCase {
     return this._authenticationTokenManager.createAccessToken({ username, id });
   }
 
-  _verifyPayload(payload) {
-    const { refreshToken } = payload;
+  async deleteAuthentication(useCasePayload) {
+    this._validatePayload(useCasePayload);
+    const { refreshToken } = useCasePayload;
+    await this._authenticationRepository.checkAvailabilityToken(refreshToken);
+    await this._authenticationRepository.deleteToken(refreshToken);
+  }
 
+  _validatePayload({ refreshToken }) {
     if (!refreshToken) {
-      throw new Error('REFRESH_AUTHENTICATION_USE_CASE.NOT_CONTAIN_REFRESH_TOKEN');
+      throw new Error('AUTHENTICATION_USE_CASE.NOT_CONTAIN_REFRESH_TOKEN');
     }
 
     if (typeof refreshToken !== 'string') {
-      throw new Error('REFRESH_AUTHENTICATION_USE_CASE.PAYLOAD_NOT_MEET_DATA_TYPE_SPECIFICATION');
+      throw new Error('AUTHENTICATION_USE_CASE.PAYLOAD_NOT_MEET_DATA_TYPE_SPECIFICATION');
     }
   }
 }
 
-module.exports = RefreshAuthenticationUseCase;
+module.exports = AuthenticationUseCase;

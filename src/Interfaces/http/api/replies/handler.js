@@ -1,5 +1,4 @@
-const AddReplyUseCase = require('../../../../Applications/use_case/AddReplyUseCase');
-const DeleteReplyUseCase = require('../../../../Applications/use_case/DeleteReplyUseCase');
+const ReplyUseCase = require('../../../../Applications/use_case/ReplyUseCase');
 
 class ReplyHandler {
   constructor(container) {
@@ -12,8 +11,8 @@ class ReplyHandler {
   async postReplyHandler(request, h) {
     const { id: userId } = request.auth.credentials;
     const { threadId, commentId } = request.params;
-    const addReplyUseCase = this._container.getInstance(AddReplyUseCase.name);
-    const addedReply = await addReplyUseCase.execute(
+    const replyUseCase = this._container.getInstance(ReplyUseCase.name);
+    const addedReply = await replyUseCase.addReply(
       userId,
       threadId,
       commentId,
@@ -33,8 +32,8 @@ class ReplyHandler {
   async deleteReplyHandler(request) {
     const { id: userId } = request.auth.credentials;
     const { threadId, commentId, replyId } = request.params;
-    const deleteReplyUseCase = this._container.getInstance(DeleteReplyUseCase.name);
-    await deleteReplyUseCase.execute(userId, threadId, commentId, replyId);
+    const replyUseCase = this._container.getInstance(ReplyUseCase.name);
+    await replyUseCase.deleteReply(userId, threadId, commentId, replyId);
     return {
       status: 'success',
     };
