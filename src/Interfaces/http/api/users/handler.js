@@ -1,4 +1,4 @@
-const AddUserUseCase = require('../../../../Applications/use_case/AddUserUseCase');
+const UserUseCase = require('../../../../Applications/use_case/UserUseCase');
 
 class UsersHandler {
   constructor(container) {
@@ -8,8 +8,8 @@ class UsersHandler {
   }
 
   async postUserHandler(request, h) {
-    const addUserUseCase = this._container.getInstance(AddUserUseCase.name);
-    const addedUser = await addUserUseCase.execute(request.payload);
+    const userUseCase = this._container.getInstance(UserUseCase.name);
+    const addedUser = await userUseCase.addUser(request.payload);
 
     const response = h.response({
       status: 'success',

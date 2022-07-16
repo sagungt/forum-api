@@ -211,7 +211,7 @@ container.register([
   },
   {
     key: ReplyUseCase.name,
-    Class: CommentUseCase,
+    Class: ReplyUseCase,
     parameter: {
       injectType: 'destructuring',
       dependencies: [
