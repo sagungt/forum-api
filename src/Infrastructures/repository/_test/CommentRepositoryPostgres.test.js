@@ -213,14 +213,14 @@ describe('CommentRepositoryPostgres', () => {
         {
           id: 'comment-1',
           username: 'dicoding',
-          date: comments1[0].date, // date invoked in database
+          date: comments1[0].date, // date created in database
           content: 'comment 1',
           isDeleted: false,
         },
         {
           id: 'comment-2',
           username: 'dicoding',
-          date: comments1[1].date, // date invoked in database
+          date: comments1[1].date, // date created in database
           content: 'comment 2',
           isDeleted: false,
         },
@@ -229,7 +229,7 @@ describe('CommentRepositoryPostgres', () => {
         {
           id: 'comment-3',
           username: 'dicoding',
-          date: comments2[0].date,
+          date: comments2[0].date, // date created in database
           content: 'comment 3',
           isDeleted: false,
         },

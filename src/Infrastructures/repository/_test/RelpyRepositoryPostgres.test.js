@@ -209,7 +209,7 @@ describe('ReplyRepositoryPostgres', () => {
         {
           id: 'reply-123',
           content: 'a comment',
-          date: replies1[0].date, // date invoked in database
+          date: replies1[0].date, // date created in database
           username: 'dicoding',
           commentId: 'comment-123',
           isDeleted: false,
@@ -217,7 +217,7 @@ describe('ReplyRepositoryPostgres', () => {
         {
           id: 'reply-1234',
           content: 'a comment',
-          date: replies1[1].date, // date invoked in database
+          date: replies1[1].date, // date created in database
           username: 'dicoding',
           commentId: 'comment-123',
           isDeleted: false,
@@ -225,7 +225,7 @@ describe('ReplyRepositoryPostgres', () => {
         {
           id: 'reply-12345',
           content: 'a comment',
-          date: replies1[2].date, // date invoked in database
+          date: replies1[2].date, // date created in database
           username: 'dicoding',
           commentId: 'comment-1234',
           isDeleted: false,
@@ -235,7 +235,7 @@ describe('ReplyRepositoryPostgres', () => {
         {
           id: 'reply-123',
           content: 'a comment',
-          date: replies2[0].date, // date invoked in database
+          date: replies2[0].date, // date created in database
           username: 'dicoding',
           commentId: 'comment-123',
           isDeleted: false,
@@ -243,7 +243,7 @@ describe('ReplyRepositoryPostgres', () => {
         {
           id: 'reply-1234',
           content: 'a comment',
-          date: replies2[1].date, // date invoked in database
+          date: replies2[1].date, // date created in database
           username: 'dicoding',
           commentId: 'comment-123',
           isDeleted: false,

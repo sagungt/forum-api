@@ -91,7 +91,7 @@ describe('ThreadRepositoryPostgres', () => {
         id: 'thread-123',
         title: 'a thread',
         body: 'thread content',
-        date: getThread.date, // date invoked in database
+        date: getThread.date, // date created in database
         username: 'dicoding',
       }));
     });
