@@ -25,16 +25,11 @@ const AuthenticationTokenManager = require('../Applications/security/Authenticat
 const JwtTokenManager = require('./security/JwtTokenManager');
 
 // use case
-const AddUserUseCase = require('../Applications/use_case/AddUserUseCase');
-const LoginUserUseCase = require('../Applications/use_case/LoginUserUseCase');
-const LogoutUserUseCase = require('../Applications/use_case/LogoutUserUseCase');
-const RefreshAuthenticationUseCase = require('../Applications/use_case/RefreshAuthenticationUseCase');
-const AddThreadUseCase = require('../Applications/use_case/AddThreadUseCase');
-const AddCommentUseCase = require('../Applications/use_case/AddCommentUseCase');
-const DeleteCommentUseCase = require('../Applications/use_case/DeleteCommentUseCase');
-const GetThreadUseCase = require('../Applications/use_case/GetThreadUseCase');
-const AddReplyUseCase = require('../Applications/use_case/AddReplyUseCase');
-const DeleteReplyUseCase = require('../Applications/use_case/DeleteReplyUseCase');
+const UserUseCase = require('../Applications/use_case/UserUseCase');
+const AuthenticationUseCase = require('../Applications/use_case/AuthenticationUseCase');
+const ThreadUseCase = require('../Applications/use_case/ThreadUseCase');
+const CommentUseCase = require('../Applications/use_case/CommentUseCase');
+const ReplyUseCase = require('../Applications/use_case/ReplyUseCase');
 
 // creating container
 const container = createContainer();
@@ -135,25 +130,8 @@ container.register([
 // registering use cases
 container.register([
   {
-    key: AddUserUseCase.name,
-    Class: AddUserUseCase,
-    parameter: {
-      injectType: 'destructuring',
-      dependencies: [
-        {
-          name: 'userRepository',
-          internal: UserRepository.name,
-        },
-        {
-          name: 'passwordHash',
-          internal: PasswordHash.name,
-        },
-      ],
-    },
-  },
-  {
-    key: LoginUserUseCase.name,
-    Class: LoginUserUseCase,
+    key: UserUseCase.name,
+    Class: UserUseCase,
     parameter: {
       injectType: 'destructuring',
       dependencies: [
@@ -177,21 +155,8 @@ container.register([
     },
   },
   {
-    key: LogoutUserUseCase.name,
-    Class: LogoutUserUseCase,
-    parameter: {
-      injectType: 'destructuring',
-      dependencies: [
-        {
-          name: 'authenticationRepository',
-          internal: AuthenticationRepository.name,
-        },
-      ],
-    },
-  },
-  {
-    key: RefreshAuthenticationUseCase.name,
-    Class: RefreshAuthenticationUseCase,
+    key: AuthenticationUseCase.name,
+    Class: AuthenticationUseCase,
     parameter: {
       injectType: 'destructuring',
       dependencies: [
@@ -207,55 +172,8 @@ container.register([
     },
   },
   {
-    key: AddThreadUseCase.name,
-    Class: AddThreadUseCase,
-    parameter: {
-      injectType: 'destructuring',
-      dependencies: [
-        {
-          name: 'threadRepository',
-          internal: ThreadRepository.name,
-        },
-      ],
-    },
-  },
-  {
-    key: AddCommentUseCase.name,
-    Class: AddCommentUseCase,
-    parameter: {
-      injectType: 'destructuring',
-      dependencies: [
-        {
-          name: 'commentRepository',
-          internal: CommentRepository.name,
-        },
-        {
-          name: 'threadRepository',
-          internal: ThreadRepository.name,
-        },
-      ],
-    },
-  },
-  {
-    key: DeleteCommentUseCase.name,
-    Class: DeleteCommentUseCase,
-    parameter: {
-      injectType: 'destructuring',
-      dependencies: [
-        {
-          name: 'commentRepository',
-          internal: CommentRepository.name,
-        },
-        {
-          name: 'threadRepository',
-          internal: ThreadRepository.name,
-        },
-      ],
-    },
-  },
-  {
-    key: GetThreadUseCase.name,
-    Class: GetThreadUseCase,
+    key: ThreadUseCase.name,
+    Class: ThreadUseCase,
     parameter: {
       injectType: 'destructuring',
       dependencies: [
@@ -275,15 +193,11 @@ container.register([
     },
   },
   {
-    key: AddReplyUseCase.name,
-    Class: AddReplyUseCase,
+    key: CommentUseCase.name,
+    Class: CommentUseCase,
     parameter: {
       injectType: 'destructuring',
       dependencies: [
-        {
-          name: 'replyRepository',
-          internal: ReplyRepository.name,
-        },
         {
           name: 'commentRepository',
           internal: CommentRepository.name,
@@ -296,8 +210,8 @@ container.register([
     },
   },
   {
-    key: DeleteReplyUseCase.name,
-    Class: DeleteReplyUseCase,
+    key: ReplyUseCase.name,
+    Class: CommentUseCase,
     parameter: {
       injectType: 'destructuring',
       dependencies: [
