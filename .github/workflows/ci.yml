@@ -31,25 +31,23 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
-      - name: create .env file 
-        run: |
-          touch .env
-          echo PGHOST=${{ secrets.PGHOST_TEST }} >> .env
-          echo PGUSER=${{ secrets.PGUSER_TEST }} >> .env
-          echo PGDATABASE=${{ secrets.PGDATABASE_TEST }} >> .env
-          echo PGPASSWORD=${{ secrets.PGPASSWORD_TEST }} >> .env
-          echo PGPORT=${{ secrets.PGPORT_TEST }} >> .env
-          echo PGHOST_TEST=${{ secrets.PGHOST_TEST }} >> .env
-          echo PGUSER_TEST=${{ secrets.PGUSER_TEST }} >> .env
-          echo PGDATABASE_TEST=${{ secrets.PGDATABASE_TEST }} >> .env
-          echo PGPASSWORD_TEST=${{ secrets.PGPASSWORD_TEST }} >> .env
-          echo PGPORT_TEST=${{ secrets.PGPORT_TEST }} >> .env
-          echo ACCESS_TOKEN_KEY=${{ secrets.ACCESS_TOKEN_KEY }} >> .env
-          echo REFRESH_TOKEN_KEY=${{ secrets.REFRESH_TOKEN_KEY }} >> .env
-          echo ACCESS_TOKEN_AGE=${{ secrets.ACCESS_TOKEN_AGE }} >> .env
-          cat .env
       - name: Install, Migrate and Test
         run: |
           npm install
           npm run migrate up
           npm run test
+        env:
+          CI: true
+          PGHOST_TEST: ${{ secrets.PGHOST_TEST }}
+          PGUSER_TEST: ${{ secrets.PGUSER_TEST }}
+          PGDATABASE_TEST: ${{ secrets.PGDATABASE_TEST }}
+          PGPASSWORD_TEST: ${{ secrets.PGPASSWORD_TEST }}
+          PGPORT_TEST: ${{ secrets.PGPORT_TEST }}
+          PGHOST: ${{ secrets.PGHOST_TEST }}
+          PGUSER: ${{ secrets.PGUSER_TEST }}
+          PGDATABASE: ${{ secrets.PGDATABASE_TEST }}
+          PGPASSWORD: ${{ secrets.PGPASSWORD_TEST }}
+          PGPORT: ${{ secrets.PGPORT_TEST }}
+          ACCESS_TOKEN_KEY: ${{ secrets.ACCESS_TOKEN_KEY }}
+          REFRESH_TOKEN_KEY: ${{ secrets.REFRESH_TOKEN_KEY }}
+          ACCESS_TOKEN_AGE: ${{ secrets.ACCESS_TOKEN_AGE }}
