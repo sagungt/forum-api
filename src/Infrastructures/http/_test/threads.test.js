@@ -117,6 +117,16 @@ describe('/threads endpoint', () => {
     });
   };
 
+  const toggleLikeComment = async (accessToken, threadId, commentId) => {
+    await server.inject({
+      method: 'PUT',
+      url: `/threads/${threadId}/comments/${commentId}/likes`,
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+  };
+
   describe('when POST /threads', () => {
     it('should response 201 and persisted thread', async () => {
       // Arrange
@@ -248,6 +258,7 @@ describe('/threads endpoint', () => {
     });
 
     it('should response 200 with correct values with comments and replies in database', async () => {
+      // Arrange
       const accessToken = await addUserAndLogin();
       const threadId = await addThread(accessToken);
       const commentId1 = await addComment(accessToken, threadId);
@@ -313,9 +324,6 @@ describe('/threads endpoint', () => {
       const response = await server.inject({
         method: 'GET',
         url: `/threads/${threadId}`,
-        headers: {
-          Authorization: `Bearer ${accessToken1}`,
-        },
       });
 
       // Arrange
@@ -329,6 +337,62 @@ describe('/threads endpoint', () => {
         .toEqual('**komentar telah dihapus**');
       expect(responseJson.data.thread.comments[1].id)
         .toEqual(commentId2);
+    });
+
+    it('should response 200 with correct like count', async () => {
+      // Arrange
+      const accessToken1 = await addUserAndLogin();
+      const accessToken2 = await addUserAndLogin({ username: 'dicoding2' });
+      const threadId = await addThread(accessToken1);
+      const commentId1 = await addComment(accessToken1, threadId);
+      const commentId2 = await addComment(accessToken1, threadId);
+      await toggleLikeComment(accessToken1, threadId, commentId1);
+      await toggleLikeComment(accessToken2, threadId, commentId1);
+      await toggleLikeComment(accessToken2, threadId, commentId2);
+
+      // Action
+      const response = await server.inject({
+        method: 'GET',
+        url: `/threads/${threadId}`,
+      });
+
+      // Arrange
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(200);
+      expect(responseJson.status).toEqual('success');
+      expect(responseJson.data.thread).toBeDefined();
+      expect(responseJson.data.thread.comments).toBeDefined();
+      expect(responseJson.data.thread.comments).toHaveLength(2);
+      expect(responseJson.data.thread.comments[0].likeCount).toEqual(2);
+      expect(responseJson.data.thread.comments[1].likeCount).toEqual(1);
+    });
+
+    it('should response 200 with correct like count and cancel like', async () => {
+      // Arrange
+      const accessToken1 = await addUserAndLogin();
+      const accessToken2 = await addUserAndLogin({ username: 'dicoding2' });
+      const threadId = await addThread(accessToken1);
+      const commentId1 = await addComment(accessToken1, threadId);
+      await addComment(accessToken1, threadId);
+      await toggleLikeComment(accessToken1, threadId, commentId1);
+      await toggleLikeComment(accessToken2, threadId, commentId1);
+      await toggleLikeComment(accessToken2, threadId, commentId1);
+
+      // Action
+      const response = await server.inject({
+        method: 'GET',
+        url: `/threads/${threadId}`,
+      });
+
+      // Arrange
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(200);
+      expect(responseJson.status).toEqual('success');
+      expect(responseJson.data.thread).toBeDefined();
+      expect(responseJson.data.thread.comments).toBeDefined();
+      expect(responseJson.data.thread.comments).toHaveLength(2);
+      expect(responseJson.data.thread.comments[0].likeCount).toEqual(1);
+      expect(responseJson.data.thread.comments[1].likeCount).toEqual(0);
     });
 
     it('should respose 404 when thread id not found', async () => {
