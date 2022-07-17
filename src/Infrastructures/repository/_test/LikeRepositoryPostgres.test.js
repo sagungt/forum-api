@@ -25,6 +25,7 @@ describe('LikeRepositoryPostgres', () => {
     await UsersTableTestHelper.addUser({ id: 'user-12345', username: 'dicoding3' });
     await ThreadsTableTestHelper.addThread({ id: threadId, owner: 'user-123' });
     await CommentsTableTestHelper.addComment({ id: commentId, owner: 'user-123' });
+    await CommentsTableTestHelper.addComment({ id: 'comment-1234', owner: 'user-123' });
   });
 
   describe('addLike function', () => {
@@ -94,18 +95,42 @@ describe('LikeRepositoryPostgres', () => {
   });
 
   describe('countCommentLikes function', () => {
-    it('should return 2 of comment is liked by 2 user', async () => {
+    it('should return 4 of 2 comments is liked by 2 user', async () => {
       // Arrange
       const likeRepositoryPostgres = new LikeRepositoryPostgres(pool, {});
 
       await LikesTableTestHelper.addLike('like-123', commentId, 'user-123');
       await LikesTableTestHelper.addLike('like-1234', commentId, 'user-1234');
+      await LikesTableTestHelper.addLike('like-12345', 'comment-1234', 'user-123');
+      await LikesTableTestHelper.addLike('like-123456', 'comment-1234', 'user-1234');
 
       // Action
-      const count = await likeRepositoryPostgres.countCommentLikes(commentId);
+      const count = await likeRepositoryPostgres.countCommentsLikes([commentId, 'comment-1234']);
 
       // Arrange
-      expect(count).toEqual(2);
+      expect(count).toHaveLength(4);
+      expect(count).toStrictEqual([
+        {
+          id: 'like-123',
+          commentId,
+          userId: 'user-123',
+        },
+        {
+          id: 'like-1234',
+          commentId,
+          userId: 'user-1234',
+        },
+        {
+          id: 'like-12345',
+          commentId: 'comment-1234',
+          userId: 'user-123',
+        },
+        {
+          id: 'like-123456',
+          commentId: 'comment-1234',
+          userId: 'user-1234',
+        },
+      ]);
     });
   });
 
@@ -114,9 +139,9 @@ describe('LikeRepositoryPostgres', () => {
     const likeRepositoryPostgres = new LikeRepositoryPostgres(pool, {});
 
     // Action
-    const count = await likeRepositoryPostgres.countCommentLikes(commentId);
+    const count = await likeRepositoryPostgres.countCommentsLikes([commentId]);
 
     // Assert
-    expect(count).toEqual(0);
+    expect(count).toHaveLength(0);
   });
 });
