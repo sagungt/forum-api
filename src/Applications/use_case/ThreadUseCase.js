@@ -7,10 +7,12 @@ class ThreadUseCase {
     threadRepository,
     commentRepository,
     replyRepository,
+    likeRepository,
   }) {
     this._threadRepository = threadRepository;
     this._commentRepository = commentRepository;
     this._replyRepository = replyRepository;
+    this._likeRepository = likeRepository;
   }
 
   async addThread(useCasePayload) {
@@ -23,11 +25,16 @@ class ThreadUseCase {
     const getThread = await this._threadRepository.findThreadById(threadId);
     const comments = await this._commentRepository.findCommentsByThreadId(threadId);
     if (comments.length) {
+      const commentsIds = comments.map((comment) => comment.id);
+      const countLikes = await this._likeRepository.countCommentsLikes(commentsIds);
       const replies = await this._replyRepository
-        .findRepliesByCommentIds(comments.map((comment) => comment.id));
+        .findRepliesByCommentIds(commentsIds);
       const replyIds = replies.map((reply) => reply.commentId);
       getThread.comments = comments.map((comment) => {
         const getComment = new GetComment(comment);
+        getComment.likeCount = countLikes
+          .filter(({ commentId }) => commentId === comment.id)
+          .length;
         if (replyIds.includes(comment.id)) {
           getComment.replies = replies
             .filter((reply) => reply.commentId === comment.id)

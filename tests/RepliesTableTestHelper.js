@@ -7,7 +7,7 @@ const RepliesTableTestHelper = {
     commentId = 'comment-123',
     content = 'a reply',
     owner = 'user-123',
-  }) => {
+  } = {}) => {
     const query = {
       text: `
         INSERT INTO
